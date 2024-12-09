@@ -1,0 +1,2319 @@
+{
+	"info": {
+		"_postman_id": "176b73ca-7a7d-4daf-a75a-6ba7401d28e2",
+		"name": "REST API - FERMATA",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29525402"
+	},
+	"item": [
+		{
+			"name": "Register Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Admin registration successful\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.token).to.exist;",
+							"    pm.expect(jsonData.role).to.equal(\"admin\");",
+							"    pm.environment.set(\"ADMIN_TOKEN\", jsonData.token);",
+							"    pm.environment.set(\"ADMIN_ID\", jsonData._id);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Admin Fermata\",\n    \"email\": \"admin@fermata.com\",\n    \"password\": \"123456\",\n    \"role\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users/register",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Register Teacher",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Teacher registration successful\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.token).to.exist;",
+							"    pm.environment.set(\"TEACHER_TOKEN\", jsonData.token);",
+							"    pm.environment.set(\"TEACHER_ID\", jsonData._id);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Teacher Fermata\",\n    \"email\": \"teacher@fermata.com\",\n    \"password\": \"123456\",\n    \"role\": \"teacher\",\n    \"phone\": \"081234567890\",\n    \"address\": \"Jl. Musik No. 1\",\n    \"teacher_data\": {\n        \"instruments\": [\"Piano\", \"Gitar\"]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users/register",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Register Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Student registration successful\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.token).to.exist;",
+							"    pm.environment.set(\"STUDENT_TOKEN\", jsonData.token);",
+							"    pm.environment.set(\"STUDENT_ID\", jsonData._id);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Student Fermata\",\n    \"email\": \"student@gmail.com\",\n    \"password\": \"123456\",\n    \"role\": \"student\",\n    \"phone\": \"081234567891\",\n    \"address\": \"Jl. Belajar No. 2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users/register",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"register"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Login Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login successful\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.token).to.exist;",
+							"    pm.environment.set(\"TOKEN\", jsonData.token);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"admin@fermata.com\",\n    \"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users/login",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": [
+				{
+					"name": "Success Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@fermata.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/users/login",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "281"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"119-Y7t4Rh1AERCaZEH05S72G/b3f3Q\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:45:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"675258ca0489af393d77801b\",\n    \"name\": \"Updated Name\",\n    \"email\": \"admin@fermata.com\",\n    \"role\": \"admin\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTI1OGNhMDQ4OWFmMzkzZDc3ODAxYiIsImlhdCI6MTczMzQ1MzEwOCwiZXhwIjoxNzM2MDQ1MTA4fQ.1ms11l8toSz_R8An1uaonYd0YfGEDMb6DhrII351UKo\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Login Teacher",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login successful\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.token).to.exist;",
+							"    pm.environment.set(\"TOKEN\", jsonData.token);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"teacher@fermata.com\",\n    \"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users/login",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": [
+				{
+					"name": "Success Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"teacher@fermata.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/users/login",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "288"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"120-BPEmGjEcUuebj6F+It1Dc1RwTjI\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:45:35 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"675258ca0489af393d77801e\",\n    \"name\": \"Teacher Fermata\",\n    \"email\": \"teacher@fermata.com\",\n    \"role\": \"teacher\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTI1OGNhMDQ4OWFmMzkzZDc3ODAxZSIsImlhdCI6MTczMzQ1MzEzNSwiZXhwIjoxNzM2MDQ1MTM1fQ.-gr3WAElvPNI7ca5iomP5i05ZxcyLGXkPe6XxpUDY2o\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Login Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login successful\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.token).to.exist;",
+							"    pm.environment.set(\"TOKEN\", jsonData.token);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"student@gmail.com\",\n    \"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users/login",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": [
+				{
+					"name": "Success Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"student@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/users/login",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "286"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"11e-rguLAXXphkW3QUae2nOPJVq/5MA\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:46:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"67525c370964385e93fbe01f\",\n    \"name\": \"Student Fermata\",\n    \"email\": \"student@gmail.com\",\n    \"role\": \"student\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTI1YzM3MDk2NDM4NWU5M2ZiZTAxZiIsImlhdCI6MTczMzQ1MzE4MCwiZXhwIjoxNzM2MDQ1MTgwfQ.qdxcrC3HhPdGXi1IWdDd-tk_WVxclSKYPBYHx5IN1G0\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users/logout",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update profile successful\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.equal(\"Updated Name\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Updated Name\",\n    \"phone\": \"085211553430\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users/profile",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"profile"
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": [
+				{
+					"name": "Update Profile",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Admin Name\",\n    \"phone\": \"085211553430\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/users/profile",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "139"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"8b-WWMsLfCqmkjlhcmVBokY0Rl0pkI\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:47:05 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"675258ca0489af393d77801b\",\n    \"name\": \"Updated Admin Name\",\n    \"email\": \"admin@fermata.com\",\n    \"role\": \"admin\",\n    \"teacher_data\": {\n        \"instruments\": []\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get profile successful\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.exist;",
+							"    pm.expect(jsonData.email).to.exist;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users/profile",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"profile"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": [
+				{
+					"name": "Get Profile",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/users/profile",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "239"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"ef-eLqW7UsTV8d/DKxqHPKZNwxQ2yE\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:47:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"user_type\": {\n        \"teacher_data\": {\n            \"instruments\": []\n        },\n        \"role\": \"admin\"\n    },\n    \"_id\": \"675258ca0489af393d77801b\",\n    \"name\": \"Updated Admin Name\",\n    \"email\": \"admin@fermata.com\",\n    \"createdAt\": \"2024-12-06T01:52:10.140Z\",\n    \"updatedAt\": \"2024-12-06T02:47:05.545Z\",\n    \"__v\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Get All Users (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get all users successful\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": [
+				{
+					"name": "Get All Users",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/users",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "840"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"348-+4i/dWULuSjc5TJ+dU1k05ax4+4\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:47:25 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"user_type\": {\n            \"teacher_data\": {\n                \"instruments\": []\n            },\n            \"role\": \"admin\"\n        },\n        \"_id\": \"675258ca0489af393d77801b\",\n        \"name\": \"Updated Admin Name\",\n        \"email\": \"admin@fermata.com\",\n        \"createdAt\": \"2024-12-06T01:52:10.140Z\",\n        \"updatedAt\": \"2024-12-06T02:47:05.545Z\",\n        \"__v\": 0\n    },\n    {\n        \"user_type\": {\n            \"teacher_data\": {\n                \"instruments\": [\n                    \"Piano\",\n                    \"Gitar\"\n                ]\n            },\n            \"role\": \"teacher\"\n        },\n        \"_id\": \"675258ca0489af393d77801e\",\n        \"name\": \"Teacher Fermata\",\n        \"email\": \"teacher@fermata.com\",\n        \"phone\": \"081234567890\",\n        \"address\": \"Jl. Musik No. 1\",\n        \"createdAt\": \"2024-12-06T01:52:10.315Z\",\n        \"updatedAt\": \"2024-12-06T01:52:10.315Z\",\n        \"__v\": 0\n    },\n    {\n        \"user_type\": {\n            \"teacher_data\": {\n                \"instruments\": []\n            },\n            \"role\": \"student\"\n        },\n        \"_id\": \"67525c370964385e93fbe01f\",\n        \"name\": \"Student Fermata\",\n        \"email\": \"student@gmail.com\",\n        \"phone\": \"081234567891\",\n        \"address\": \"Jl. Belajar No. 2\",\n        \"createdAt\": \"2024-12-06T02:06:47.180Z\",\n        \"updatedAt\": \"2024-12-06T02:06:47.180Z\",\n        \"__v\": 0\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Create Package (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Package created successfully\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData._id).to.exist;",
+							"    pm.environment.set(\"PACKAGE_ID\", jsonData._id);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"OFFLINE CLASS Piano Basic\",\n    \"description\": \"Piano class for beginners\",\n    \"duration\": 30,\n    \"price\": 1500000,\n    \"sessionCount\": 12,\n    \"instrument\": \"Piano\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/packages",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"packages"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": [
+				{
+					"name": "Create Package (Admin)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"OFFLINE CLASS Piano Basic\",\n    \"description\": \"Piano class for beginners\",\n    \"duration\": 30,\n    \"price\": 1500000,\n    \"sessionCount\": 12,\n    \"instrument\": \"Piano\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/packages",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"packages"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "282"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"11a-bTC2FygiyCVTAdyRbmZd9rikd0Y\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:47:55 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"OFFLINE CLASS Piano Basic\",\n    \"description\": \"Piano class for beginners\",\n    \"duration\": 30,\n    \"price\": 1500000,\n    \"sessionCount\": 12,\n    \"instrument\": \"Piano\",\n    \"isActive\": true,\n    \"_id\": \"675265db673c56bf60829dcb\",\n    \"createdAt\": \"2024-12-06T02:47:55.826Z\",\n    \"updatedAt\": \"2024-12-06T02:47:55.826Z\",\n    \"__v\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Get All Packages",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get packages successful\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/packages",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"packages"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": [
+				{
+					"name": "Get All Packages",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/packages",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"packages"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "582"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"246-Fwj8nXmc+cOIt0evvAUigOMZOC8\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:48:35 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"_id\": \"67525d5c0964385e93fbe028\",\n        \"name\": \"OFFLINE CLASS Piano Basic\",\n        \"description\": \"Updated basic piano course for beginners\",\n        \"duration\": 30,\n        \"price\": 1600000,\n        \"sessionCount\": 12,\n        \"instrument\": \"Piano\",\n        \"isActive\": true,\n        \"createdAt\": \"2024-12-06T02:11:40.264Z\",\n        \"updatedAt\": \"2024-12-06T02:19:57.459Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"675265db673c56bf60829dcb\",\n        \"name\": \"OFFLINE CLASS Piano Basic\",\n        \"description\": \"Piano class for beginners\",\n        \"duration\": 30,\n        \"price\": 1500000,\n        \"sessionCount\": 12,\n        \"instrument\": \"Piano\",\n        \"isActive\": true,\n        \"createdAt\": \"2024-12-06T02:47:55.826Z\",\n        \"updatedAt\": \"2024-12-06T02:47:55.826Z\",\n        \"__v\": 0\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Create Student Package (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create student package successful\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data).to.exist;",
+							"    pm.environment.set(\"STUDENT_PACKAGE_ID\", jsonData.data._id);",
+							"    pm.environment.set(\"SCHEDULE_ID\", jsonData.data.schedules[0]._id);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"student_id\": \"{{STUDENT_ID}}\",\n    \"package_id\": \"{{PACKAGE_ID}}\",\n    \"payment_status\": \"Belum Lunas\",\n    \"payment_total\": 1500000,\n    \"payment_date\": \"2024-04-05\",\n    \"date_periode\": [{\n        \"start\": \"2024-04-05\",\n        \"end\": \"2024-07-05\"\n    }],\n    \"schedules\": [{\n        \"teacher_id\": \"{{TEACHER_ID}}\",\n        \"date\": \"2024-04-10\",\n        \"time\": \"15:00\",\n        \"transport_fee\": 50000,\n        \"teacher_fee\": 100000,\n        \"room\": \"Ruang 1\"\n    }]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/student-packages",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"student-packages"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": [
+				{
+					"name": "Create Student Package (Admin)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\": \"{{STUDENT_ID}}\",\n    \"package_id\": \"{{PACKAGE_ID}}\",\n    \"payment_status\": \"Belum Lunas\",\n    \"payment_total\": 1500000,\n    \"payment_date\": \"2024-04-05\",\n    \"date_periode\": [{\n        \"start\": \"2024-04-05\",\n        \"end\": \"2024-07-05\"\n    }],\n    \"schedules\": [{\n        \"teacher_id\": \"{{TEACHER_ID}}\",\n        \"date\": \"2024-04-10\",\n        \"time\": \"15:00\",\n        \"transport_fee\": 50000,\n        \"teacher_fee\": 100000,\n        \"room\": \"Ruang 1\"\n    }]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/student-packages",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"student-packages"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "639"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"27f-LYB/ucP2zg2L0YOnPuRM81RNXIk\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:49:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"student_id\": \"67525c370964385e93fbe01f\",\n        \"package_id\": \"67525d5c0964385e93fbe028\",\n        \"payment_status\": \"Belum Lunas\",\n        \"payment_total\": 1500000,\n        \"payment_date\": \"2024-04-05T00:00:00.000Z\",\n        \"date_periode\": [\n            {\n                \"start\": \"2024-04-05T00:00:00.000Z\",\n                \"end\": \"2024-07-05T00:00:00.000Z\",\n                \"_id\": \"67526624673c56bf60829dd1\"\n            }\n        ],\n        \"schedules\": [\n            {\n                \"teacher_id\": \"675258ca0489af393d77801e\",\n                \"date\": \"2024-04-10T00:00:00.000Z\",\n                \"time\": \"15:00\",\n                \"transport_fee\": 50000,\n                \"teacher_fee\": 100000,\n                \"room\": \"Ruang 1\",\n                \"_id\": \"67526624673c56bf60829dd2\"\n            }\n        ],\n        \"_id\": \"67526624673c56bf60829dd0\",\n        \"createdAt\": \"2024-12-06T02:49:08.369Z\",\n        \"updatedAt\": \"2024-12-06T02:49:08.369Z\",\n        \"__v\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Teacher Schedules (Teacher)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get teacher schedules successful\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data).to.exist;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TEACHER_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/student-packages/schedules/teacher",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"student-packages",
+						"schedules",
+						"teacher"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": [
+				{
+					"name": "Get Teacher Schedules (Teacher)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/student-packages/schedules/teacher",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"student-packages",
+								"schedules",
+								"teacher"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "917"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"395-ihAfRSJtn+hX+EZ7IOr6JhfA6s0\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:49:22 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"_id\": \"67525dd60964385e93fbe035\",\n            \"student_id\": {\n                \"_id\": \"67525c370964385e93fbe01f\",\n                \"name\": \"Student Fermata\"\n            },\n            \"package_id\": {\n                \"_id\": \"67525d5c0964385e93fbe028\",\n                \"name\": \"OFFLINE CLASS Piano Basic\",\n                \"description\": \"Updated basic piano course for beginners\"\n            },\n            \"schedules\": [\n                {\n                    \"teacher_id\": \"675258ca0489af393d77801e\",\n                    \"date\": \"2024-04-10T00:00:00.000Z\",\n                    \"time\": \"15:00\",\n                    \"transport_fee\": 50000,\n                    \"teacher_fee\": 100000,\n                    \"room\": \"Ruang 1\",\n                    \"_id\": \"67525dd60964385e93fbe037\"\n                }\n            ]\n        },\n        {\n            \"_id\": \"67526624673c56bf60829dd0\",\n            \"student_id\": {\n                \"_id\": \"67525c370964385e93fbe01f\",\n                \"name\": \"Student Fermata\"\n            },\n            \"package_id\": {\n                \"_id\": \"67525d5c0964385e93fbe028\",\n                \"name\": \"OFFLINE CLASS Piano Basic\",\n                \"description\": \"Updated basic piano course for beginners\"\n            },\n            \"schedules\": [\n                {\n                    \"teacher_id\": \"675258ca0489af393d77801e\",\n                    \"date\": \"2024-04-10T00:00:00.000Z\",\n                    \"time\": \"15:00\",\n                    \"transport_fee\": 50000,\n                    \"teacher_fee\": 100000,\n                    \"room\": \"Ruang 1\",\n                    \"_id\": \"67526624673c56bf60829dd2\"\n                }\n            ]\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Student Schedules (Student)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get student schedules successful\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data).to.exist;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{STUDENT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/student-packages/schedules/student",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"student-packages",
+						"schedules",
+						"student"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": [
+				{
+					"name": "Get Student Schedules (Student)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/student-packages/schedules/student",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"student-packages",
+								"schedules",
+								"student"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "837"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"345-DNhqV0MsowejNbvfKwY2dsWNazk\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:49:31 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"_id\": \"67525dd60964385e93fbe035\",\n            \"package_id\": {\n                \"_id\": \"67525d5c0964385e93fbe028\",\n                \"name\": \"OFFLINE CLASS Piano Basic\",\n                \"description\": \"Updated basic piano course for beginners\"\n            },\n            \"schedules\": [\n                {\n                    \"teacher_id\": {\n                        \"_id\": \"675258ca0489af393d77801e\",\n                        \"name\": \"Teacher Fermata\"\n                    },\n                    \"date\": \"2024-04-10T00:00:00.000Z\",\n                    \"time\": \"15:00\",\n                    \"transport_fee\": 50000,\n                    \"teacher_fee\": 100000,\n                    \"room\": \"Ruang 1\",\n                    \"_id\": \"67525dd60964385e93fbe037\"\n                }\n            ]\n        },\n        {\n            \"_id\": \"67526624673c56bf60829dd0\",\n            \"package_id\": {\n                \"_id\": \"67525d5c0964385e93fbe028\",\n                \"name\": \"OFFLINE CLASS Piano Basic\",\n                \"description\": \"Updated basic piano course for beginners\"\n            },\n            \"schedules\": [\n                {\n                    \"teacher_id\": {\n                        \"_id\": \"675258ca0489af393d77801e\",\n                        \"name\": \"Teacher Fermata\"\n                    },\n                    \"date\": \"2024-04-10T00:00:00.000Z\",\n                    \"time\": \"15:00\",\n                    \"transport_fee\": 50000,\n                    \"teacher_fee\": 100000,\n                    \"room\": \"Ruang 1\",\n                    \"_id\": \"67526624673c56bf60829dd2\"\n                }\n            ]\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Admin Update Student Package",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"student_id\": \"{{STUDENT_ID}}\",\n    \"package_id\": \"{{PACKAGE_ID}}\",\n    \"payment_status\": \"Belum Lunas\",\n    \"payment_total\": 1500000,\n    \"payment_date\": \"2024-03-14\",\n    \"date_period\": {\n        \"start\": \"2024-03-14\",\n        \"end\": \"2024-06-14\"\n    },\n    \"schedules\": [\n    {\n        \"teacher_id\": \"{{TEACHER_ID}}\",\n        \"date\": \"2024-04-10\",\n        \"time\": \"18:00\",\n        \"transport_fee\": 12000,\n        \"teacher_fee\": 100000,\n        \"room\": \"Ruang 1\"\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/student-packages/{{STUDENT_PACKAGE_ID}}/schedules/{{SCHEDULE_ID}}",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"student-packages",
+						"{{STUDENT_PACKAGE_ID}}",
+						"schedules",
+						"{{SCHEDULE_ID}}"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": [
+				{
+					"name": "Admin Update Student Package",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\": \"{{STUDENT_ID}}\",\n    \"package_id\": \"{{PACKAGE_ID}}\",\n    \"payment_status\": \"Belum Lunas\",\n    \"payment_total\": 1500000,\n    \"payment_date\": \"2024-03-14\",\n    \"date_period\": {\n        \"start\": \"2024-03-14\",\n        \"end\": \"2024-06-14\"\n    },\n    \"schedules\": [\n    {\n        \"teacher_id\": \"{{TEACHER_ID}}\",\n        \"date\": \"2024-04-10\",\n        \"time\": \"18:00\",\n        \"transport_fee\": 12000,\n        \"teacher_fee\": 100000,\n        \"room\": \"Ruang 1\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/student-packages/{{STUDENT_PACKAGE_ID}}/schedules/{{SCHEDULE_ID}}",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"student-packages",
+								"{{STUDENT_PACKAGE_ID}}",
+								"schedules",
+								"{{SCHEDULE_ID}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "639"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"27f-VP3+lnEthzCjAtKrrr7Nzj9VG1k\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:49:59 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"67525dd60964385e93fbe035\",\n        \"student_id\": \"67525c370964385e93fbe01f\",\n        \"package_id\": \"67525d5c0964385e93fbe028\",\n        \"payment_status\": \"Belum Lunas\",\n        \"payment_total\": 1500000,\n        \"payment_date\": \"2024-04-05T00:00:00.000Z\",\n        \"date_periode\": [\n            {\n                \"start\": \"2024-04-05T00:00:00.000Z\",\n                \"end\": \"2024-07-05T00:00:00.000Z\",\n                \"_id\": \"67525dd60964385e93fbe036\"\n            }\n        ],\n        \"schedules\": [\n            {\n                \"teacher_id\": \"675258ca0489af393d77801e\",\n                \"date\": \"2024-04-10T00:00:00.000Z\",\n                \"time\": \"15:00\",\n                \"transport_fee\": 50000,\n                \"teacher_fee\": 100000,\n                \"room\": \"Ruang 1\",\n                \"_id\": \"67525dd60964385e93fbe037\"\n            }\n        ],\n        \"createdAt\": \"2024-12-06T02:13:42.211Z\",\n        \"updatedAt\": \"2024-12-06T02:49:59.381Z\",\n        \"__v\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Attendance (Teacher)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update attendance successful\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.attendance_status).to.equal(\"Hadir\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"attendance_status\": \"Success\",\n    \"activity_photo\": \"photo_url.jpg\",\n    \"note\": \"Student performed well\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/student-packages/{{STUDENT_PACKAGE_ID}}/schedules/{{SCHEDULE_ID}}/attendance",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"student-packages",
+						"{{STUDENT_PACKAGE_ID}}",
+						"schedules",
+						"{{SCHEDULE_ID}}",
+						"attendance"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": [
+				{
+					"name": "Fail Update Attendance (Not Teacher)",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"attendance_status\": \"Success\",\n    \"activity_photo\": \"photo_url.jpg\",\n    \"note\": \"Student performed very good vey welllll\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/student-packages/{{STUDENT_PACKAGE_ID}}/schedules/{{SCHEDULE_ID}}/attendance",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"student-packages",
+								"{{STUDENT_PACKAGE_ID}}",
+								"schedules",
+								"{{SCHEDULE_ID}}",
+								"attendance"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "68"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"44-UJqC0W2zqHxyYvskGd2RRB45/xU\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:51:00 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Not authorized to update this schedule\"\n}"
+				},
+				{
+					"name": "Success Update Attendance (Teacher)",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"attendance_status\": \"Success\",\n    \"activity_photo\": \"photo_url.jpg\",\n    \"note\": \"Student performed very good vey welllll\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/student-packages/{{STUDENT_PACKAGE_ID}}/schedules/{{SCHEDULE_ID}}/attendance",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"student-packages",
+								"{{STUDENT_PACKAGE_ID}}",
+								"schedules",
+								"{{SCHEDULE_ID}}",
+								"attendance"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "319"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"13f-K7kV2aRySghqDPozh/CVab/w/Os\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:52:28 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"teacher_id\": \"675258ca0489af393d77801e\",\n        \"date\": \"2024-04-10T00:00:00.000Z\",\n        \"time\": \"15:00\",\n        \"transport_fee\": 50000,\n        \"teacher_fee\": 100000,\n        \"room\": \"Ruang 1\",\n        \"_id\": \"67525dd60964385e93fbe037\",\n        \"attendance_status\": \"Success\",\n        \"activity_photo\": \"photo_url.jpg\",\n        \"note\": \"Student performed very good vey welllll\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get All Student Packages (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get all student packages successful\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"    pm.expect(jsonData.data).to.be.an('array');",
+							"    ",
+							"    // Test data popoluation",
+							"    if(jsonData.data.length > 0) {",
+							"        pm.expect(jsonData.data[0].student_id).to.have.property('name');",
+							"        pm.expect(jsonData.data[0].package_id).to.have.property('name');",
+							"        pm.expect(jsonData.data[0]).to.have.property('schedules');",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/student-packages",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"student-packages"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": [
+				{
+					"name": "Get All Student Packages (Admin)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/student-packages",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"student-packages"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1863"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"747-0T+ScIKkRrV6MJXvShb+tHYovEk\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:52:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"_id\": \"67525dd60964385e93fbe035\",\n            \"student_id\": {\n                \"_id\": \"67525c370964385e93fbe01f\",\n                \"name\": \"Student Fermata\",\n                \"email\": \"student@gmail.com\",\n                \"phone\": \"081234567891\"\n            },\n            \"package_id\": {\n                \"_id\": \"67525d5c0964385e93fbe028\",\n                \"name\": \"OFFLINE CLASS Piano Basic\",\n                \"description\": \"Updated basic piano course for beginners\",\n                \"duration\": 30,\n                \"price\": 1600000\n            },\n            \"payment_status\": \"Belum Lunas\",\n            \"payment_total\": 1500000,\n            \"payment_date\": \"2024-04-05T00:00:00.000Z\",\n            \"date_periode\": [\n                {\n                    \"start\": \"2024-04-05T00:00:00.000Z\",\n                    \"end\": \"2024-07-05T00:00:00.000Z\",\n                    \"_id\": \"67525dd60964385e93fbe036\"\n                }\n            ],\n            \"schedules\": [\n                {\n                    \"teacher_id\": {\n                        \"_id\": \"675258ca0489af393d77801e\",\n                        \"name\": \"Teacher Fermata\"\n                    },\n                    \"date\": \"2024-04-10T00:00:00.000Z\",\n                    \"time\": \"15:00\",\n                    \"transport_fee\": 50000,\n                    \"teacher_fee\": 100000,\n                    \"room\": \"Ruang 1\",\n                    \"_id\": \"67525dd60964385e93fbe037\",\n                    \"activity_photo\": \"photo_url.jpg\",\n                    \"attendance_status\": \"Success\",\n                    \"note\": \"Student performed very good vey welllll\"\n                }\n            ],\n            \"createdAt\": \"2024-12-06T02:13:42.211Z\",\n            \"updatedAt\": \"2024-12-06T02:52:28.014Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"67526624673c56bf60829dd0\",\n            \"student_id\": {\n                \"_id\": \"67525c370964385e93fbe01f\",\n                \"name\": \"Student Fermata\",\n                \"email\": \"student@gmail.com\",\n                \"phone\": \"081234567891\"\n            },\n            \"package_id\": {\n                \"_id\": \"67525d5c0964385e93fbe028\",\n                \"name\": \"OFFLINE CLASS Piano Basic\",\n                \"description\": \"Updated basic piano course for beginners\",\n                \"duration\": 30,\n                \"price\": 1600000\n            },\n            \"payment_status\": \"Belum Lunas\",\n            \"payment_total\": 1500000,\n            \"payment_date\": \"2024-04-05T00:00:00.000Z\",\n            \"date_periode\": [\n                {\n                    \"start\": \"2024-04-05T00:00:00.000Z\",\n                    \"end\": \"2024-07-05T00:00:00.000Z\",\n                    \"_id\": \"67526624673c56bf60829dd1\"\n                }\n            ],\n            \"schedules\": [\n                {\n                    \"teacher_id\": {\n                        \"_id\": \"675258ca0489af393d77801e\",\n                        \"name\": \"Teacher Fermata\"\n                    },\n                    \"date\": \"2024-04-10T00:00:00.000Z\",\n                    \"time\": \"15:00\",\n                    \"transport_fee\": 50000,\n                    \"teacher_fee\": 100000,\n                    \"room\": \"Ruang 1\",\n                    \"_id\": \"67526624673c56bf60829dd2\"\n                }\n            ],\n            \"createdAt\": \"2024-12-06T02:49:08.369Z\",\n            \"updatedAt\": \"2024-12-06T02:49:08.369Z\",\n            \"__v\": 0\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Package (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Package updated successfully\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.price).to.equal(1600000);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"price\": 1600000,\n    \"description\": \"Updated basic piano course for beginners\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/packages/{{PACKAGE_ID}}",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"packages",
+						"{{PACKAGE_ID}}"
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": [
+				{
+					"name": "Update Package (Admin)",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 160000,\n    \"description\": \"Updated basic piano course for beginners\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{FERMATA_URL}}/api/packages/{{PACKAGE_ID}}",
+							"host": [
+								"{{FERMATA_URL}}"
+							],
+							"path": [
+								"api",
+								"packages",
+								"{{PACKAGE_ID}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "296"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"128-mH91cfd+VGEXbUG97sj82kTyzNQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 02:53:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"_id\": \"67525d5c0964385e93fbe028\",\n    \"name\": \"OFFLINE CLASS Piano Basic\",\n    \"description\": \"Updated basic piano course for beginners\",\n    \"duration\": 30,\n    \"price\": 160000,\n    \"sessionCount\": 12,\n    \"instrument\": \"Piano\",\n    \"isActive\": true,\n    \"createdAt\": \"2024-12-06T02:11:40.264Z\",\n    \"updatedAt\": \"2024-12-06T02:53:01.667Z\",\n    \"__v\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete User (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delete user successful\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.equal(\"User deleted successfully\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/users/{{USER_ID}}",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{USER_ID}}"
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Package (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Package deleted successfully\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.equal(\"Package deleted successfully\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/packages/{{PACKAGE_ID}}",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"packages",
+						"{{PACKAGE_ID}}"
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Add Schedule to Student Package (Admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"teacher_id\": \"{{TEACHER_ID}}\",\r\n  \"date\": \"2024-01-15\",\r\n  \"time\": \"14:00\",\r\n  \"transport_fee\": 50000,\r\n  \"teacher_fee\": 200000,\r\n  \"room\": \"Ruang 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/student-packages/:studentPackageId/schedules",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"student-packages",
+						":studentPackageId",
+						"schedules"
+					],
+					"variable": [
+						{
+							"key": "studentPackageId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Schedule Attendance (Teacher)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"attendance_status\": \"Success\", // Belum Berlangsung, Success, Murid Izin, Guru Izin, Reschedule\r\n  \"activity_photo\": \"photoUrl\", // Optional\r\n  \"note\": \"Additional notes\" // Optional\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{FERMATA_URL}}/api/student-packages/:studentPackageId/schedules/:scheduleId/attendance",
+					"host": [
+						"{{FERMATA_URL}}"
+					],
+					"path": [
+						"api",
+						"student-packages",
+						":studentPackageId",
+						"schedules",
+						":scheduleId",
+						"attendance"
+					],
+					"variable": [
+						{
+							"key": "studentPackageId",
+							"value": ""
+						},
+						{
+							"key": "scheduleId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "FERMATA_URL",
+			"value": "http://localhost:4000"
+		},
+		{
+			"key": "TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTI1OGNhMDQ4OWFmMzkzZDc3ODAxYiIsImlhdCI6MTczMzQ1MDY5MiwiZXhwIjoxNzM2MDQyNjkyfQ.Lx1oIRc18rbS-lsG2MrWeDVI_iY13Fdsa-Bg4NsdqTc",
+			"type": "string"
+		},
+		{
+			"key": "PACKAGE_ID",
+			"value": "67525d5c0964385e93fbe028",
+			"type": "string"
+		},
+		{
+			"key": "STUDENT_ID",
+			"value": "67525c370964385e93fbe01f",
+			"type": "string"
+		},
+		{
+			"key": "TEACHER_ID",
+			"value": "675258ca0489af393d77801e",
+			"type": "string"
+		},
+		{
+			"key": "STUDENT_PACKAGE_ID",
+			"value": "67525dd60964385e93fbe035",
+			"type": "string"
+		},
+		{
+			"key": "SCHEDULE_ID",
+			"value": "67525dd60964385e93fbe037",
+			"type": "string"
+		},
+		{
+			"key": "TEACHER_TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTI1OGNhMDQ4OWFmMzkzZDc3ODAxZSIsImlhdCI6MTczMzQ1MjgyMSwiZXhwIjoxNzM2MDQ0ODIxfQ.V6Z8hHREB1zRv8OARad42LuLrAmGnZXPNcqY3PJ4_Hg",
+			"type": "string"
+		},
+		{
+			"key": "STUDENT_TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTI1YzM3MDk2NDM4NWU5M2ZiZTAxZiIsImlhdCI6MTczMzQ1MzAxMSwiZXhwIjoxNzM2MDQ1MDExfQ.qI9KU_UecnNGALIXUEWOLjSU_kYXSseLomTzV41wP8k",
+			"type": "string"
+		},
+		{
+			"key": "ADMIN_TOKEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ADMIN_ID",
+			"value": "675258ca0489af393d77801b",
+			"type": "string"
+		},
+		{
+			"key": "USER_ID",
+			"value": "674d6643d4481326132b0fd6",
+			"type": "string"
+		}
+	]
+}
