@@ -1,5 +1,7 @@
 const StudentPackage = require("../models/studentPackageModel");
 const User = require("../models/userModel");
+const Package = require("../models/packageModel");
+const { updateSalarySlip } = require("./salarySlipController");
 
 // Create new student package (Admin only)
 const createStudentPackage = async (req, res) => {
@@ -14,7 +16,7 @@ const createStudentPackage = async (req, res) => {
       schedules,
     } = req.body;
 
-    // Validatte payment_status
+    // Validate payment_status
     if (!["Belum Lunas", "Lunas", "Dibatalkan"].includes(payment_status)) {
       return res.status(400).json({
         success: false,
@@ -44,6 +46,17 @@ const createStudentPackage = async (req, res) => {
       date_periode,
       schedules,
     });
+
+    // Update salary slips for each schedule
+    const package = await Package.findById(package_id);
+    for (const schedule of studentPackage.schedules) {
+      await updateSalarySlip(
+        schedule.teacher_id,
+        schedule,
+        studentUser.name,
+        package.instrument
+      );
+    }
 
     res.status(201).json({
       success: true,
@@ -171,6 +184,71 @@ const updateAttendance = async (req, res) => {
 
     await studentPackage.save();
 
+    // Update salary slip
+    const student = await User.findById(studentPackage.student_id);
+    const package = await Package.findById(studentPackage.package_id);
+    await updateSalarySlip(
+      schedule.teacher_id,
+      schedule,
+      student.name,
+      package.instrument
+    );
+
+    res.status(200).json({
+      success: true,
+      data: schedule,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Update schedule (Admin only)
+const updateSchedule = async (req, res) => {
+  try {
+    const { studentPackageId, scheduleId } = req.params;
+    const { teacher_id, date, time, transport_fee, teacher_fee, room } =
+      req.body;
+
+    const studentPackage = await StudentPackage.findById(studentPackageId);
+    if (!studentPackage) {
+      return res.status(404).json({
+        success: false,
+        message: "Student package not found",
+      });
+    }
+
+    const schedule = studentPackage.schedules.id(scheduleId);
+    if (!schedule) {
+      return res.status(404).json({
+        success: false,
+        message: "Schedule not found",
+      });
+    }
+
+    // Update schedule fields
+    if (teacher_id) schedule.teacher_id = teacher_id;
+    if (date) schedule.date = new Date(date);
+    if (time) schedule.time = time;
+    if (transport_fee !== undefined) schedule.transport_fee = transport_fee;
+    if (teacher_fee !== undefined) schedule.teacher_fee = teacher_fee;
+    if (room) schedule.room = room;
+
+    await studentPackage.save();
+
+    // Update salary slip
+    const student = await User.findById(studentPackage.student_id);
+    const package = await Package.findById(studentPackage.package_id);
+    await updateSalarySlip(
+      schedule.teacher_id,
+      schedule,
+      student.name,
+      package.instrument
+    );
+
     res.status(200).json({
       success: true,
       data: schedule,
@@ -198,10 +276,19 @@ const addSchedule = async (req, res) => {
       });
     }
 
-    // Add new sched
+    // Parse the date string into a Date object
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid date format",
+      });
+    }
+
+    // Add new schedule
     const newSchedule = {
       teacher_id,
-      date,
+      date: parsedDate,
       time,
       transport_fee,
       teacher_fee,
@@ -213,57 +300,24 @@ const addSchedule = async (req, res) => {
     studentPackage.schedules.push(newSchedule);
     await studentPackage.save();
 
-    res.status(200).json({
-      success: true,
-      message: "Schedule added successfully",
-      data: studentPackage,
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-// Update schedule (Admin only)
-const updateSchedule = async (req, res) => {
-  try {
-    const { studentPackageId, scheduleId } = req.params;
-    const { teacher_id, date, time, transport_fee, teacher_fee, room } =
-      req.body;
-
-    const studentPackage = await StudentPackage.findOneAndUpdate(
-      {
-        _id: studentPackageId,
-        "schedules._id": scheduleId,
-      },
-      {
-        $set: {
-          "schedules.$.teacher_id": teacher_id || undefined,
-          "schedules.$.date": date || undefined,
-          "schedules.$.time": time || undefined,
-          "schedules.$.transport_fee": transport_fee || undefined,
-          "schedules.$.teacher_fee": teacher_fee || undefined,
-          "schedules.$.room": room || undefined,
-        },
-      },
-      {
-        new: true,
-        runValidators: true,
-        context: "query",
-      }
-    );
-
-    if (!studentPackage) {
-      return res.status(404).json({
-        success: false,
-        message: "Student package or schedule not found",
-      });
+    try {
+      // Update salary slip
+      const student = await User.findById(studentPackage.student_id);
+      const package = await Package.findById(studentPackage.package_id);
+      await updateSalarySlip(
+        newSchedule.teacher_id,
+        newSchedule,
+        student.name,
+        package.instrument
+      );
+    } catch (error) {
+      console.error("Error updating salary slip:", error);
+      // You may choose to return an error response here or just log the error
     }
 
     res.status(200).json({
       success: true,
+      message: "Schedule added successfully",
       data: studentPackage,
     });
   } catch (error) {

@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 const userRoutes = require("./routes/userRoutes");
 const packageRoutes = require("./routes/packageRoutes");
 const studentPackageRoutes = require("./routes/studentPackageRoutes");
+const salarySlipRoutes = require("./routes/salarySlipRoutes");
 
 // Validate routes first, then import before using them
 if (!userRoutes || !packageRoutes) {
@@ -31,6 +32,7 @@ if (!userRoutes || !packageRoutes) {
 app.use("/api/users", userRoutes);
 app.use("/api/packages", packageRoutes);
 app.use("/api/student-packages", studentPackageRoutes);
+app.use("/api/salary-slips", salarySlipRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -53,7 +55,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Handle unhandled promise rejections
