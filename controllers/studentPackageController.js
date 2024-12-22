@@ -134,7 +134,6 @@ const getStudentSchedules = async (req, res) => {
   }
 };
 
-// Update attendance (Teacher only)
 const updateAttendance = async (req, res) => {
   try {
     const { studentPackageId, scheduleId } = req.params;
@@ -171,7 +170,11 @@ const updateAttendance = async (req, res) => {
       });
     }
 
-    if (schedule.teacher_id.toString() !== req.user.id) {
+    // Updated authorization check to allow both teacher and admin
+    if (
+      req.user.user_type.role !== "admin" &&
+      schedule.teacher_id.toString() !== req.user.id
+    ) {
       return res.status(403).json({
         success: false,
         message: "Not authorized to update this schedule",
@@ -205,7 +208,6 @@ const updateAttendance = async (req, res) => {
     });
   }
 };
-
 // Update schedule (Admin only)
 const updateSchedule = async (req, res) => {
   try {

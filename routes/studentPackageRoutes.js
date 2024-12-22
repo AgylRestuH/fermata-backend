@@ -58,6 +58,25 @@ router.put(
   asyncHandler(updateAttendance)
 );
 
+// Updated route to use custom middleware that allows both teacher and admin
+router.put(
+  "/:studentPackageId/schedules/:scheduleId/attendance",
+  protect,
+  (req, res, next) => {
+    if (
+      req.user?.user_type?.role === "admin" ||
+      req.user?.user_type?.role === "teacher"
+    ) {
+      next();
+    } else {
+      res.status(403).json({
+        message: "Not authorized - requires admin or teacher role",
+      });
+    }
+  },
+  asyncHandler(updateAttendance)
+);
+
 // Student routes
 router.get("/schedules/student", protect, asyncHandler(getStudentSchedules));
 
