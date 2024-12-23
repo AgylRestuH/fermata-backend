@@ -204,6 +204,39 @@ const updateAttendance = async (req, res) => {
   }
 };
 
+const getAllSchedules = async (req, res) => {
+  try {
+    const studentPackages = await StudentPackage.find()
+      .populate("student_id", "name email phone")
+      .populate("package_id", "name description duration price instrument")
+      .populate("schedules.teacher_id", "name email phone");
+
+    const allSchedules = studentPackages.flatMap((pkg) => {
+      return pkg.schedules.map((schedule) => ({
+        student: pkg.student_id,
+        package: pkg.package_id,
+        teacher: schedule.teacher_id,
+        date: schedule.date,
+        time: schedule.time,
+        room: schedule.room,
+        attendance_status: schedule.attendance_status,
+        note: schedule.note,
+        activity_photo: schedule.activity_photo,
+      }));
+    });
+
+    res.status(200).json({
+      success: true,
+      data: allSchedules,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 const updateSchedule = async (req, res) => {
   try {
     const { studentPackageId, scheduleId } = req.params;
@@ -392,4 +425,5 @@ module.exports = {
   deleteStudentPackage,
   deleteSchedule,
   addSchedule,
+  getAllSchedules,
 };

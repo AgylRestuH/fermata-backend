@@ -12,6 +12,7 @@ const {
   updateAttendance,
   getStudentSchedules,
   addSchedule,
+  getAllSchedules,
 } = require("../controllers/studentPackageController");
 
 const asyncHandler = (fn) => (req, res, next) => {
@@ -42,6 +43,8 @@ router.post(
   admin,
   asyncHandler(addSchedule)
 );
+
+router.get("/schedules/all", protect, admin, asyncHandler(getAllSchedules));
 
 router.get(
   "/schedules/teacher",
