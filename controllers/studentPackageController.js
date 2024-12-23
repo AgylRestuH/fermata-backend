@@ -137,7 +137,7 @@ const getStudentSchedules = async (req, res) => {
 const updateAttendance = async (req, res) => {
   try {
     const { studentPackageId, scheduleId } = req.params;
-    const { attendance_status, activity_photo, note } = req.body;
+    const { attendance_status, note } = req.body;
 
     if (
       ![
@@ -182,7 +182,7 @@ const updateAttendance = async (req, res) => {
     }
 
     schedule.attendance_status = attendance_status;
-    schedule.activity_photo = activity_photo;
+    schedule.activity_photo = req.file ? `/public/uploads${req.file.filename}` : schedule.activity_photo;
     schedule.note = note;
 
     await studentPackage.save();
@@ -208,6 +208,7 @@ const updateAttendance = async (req, res) => {
     });
   }
 };
+
 // Update schedule (Admin only)
 const updateSchedule = async (req, res) => {
   try {

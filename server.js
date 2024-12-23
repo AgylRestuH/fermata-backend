@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
+const path = require("path");
 
 connectDB();
 
@@ -11,6 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 
 // Base route untuk testing
 app.get("/", (req, res) => {

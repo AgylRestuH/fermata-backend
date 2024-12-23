@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { protect, admin, teacher } = require("../middleware/authMiddleware");
+const upload = require("../middleware/uploadMiddleware");
 const {
   createStudentPackage,
   getAllStudentPackages,
@@ -55,6 +56,7 @@ router.put(
   "/:studentPackageId/schedules/:scheduleId/attendance",
   protect,
   teacher,
+  upload.single("activity_photo"), // Middleware upload file
   asyncHandler(updateAttendance)
 );
 
@@ -74,6 +76,7 @@ router.put(
       });
     }
   },
+  upload.single("activity_photo"), // Middleware upload file
   asyncHandler(updateAttendance)
 );
 
