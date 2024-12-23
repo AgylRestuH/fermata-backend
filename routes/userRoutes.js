@@ -15,16 +15,13 @@ const {
   adminUpdateUser,
 } = require("../controllers/userController");
 
-// Error handler wrapper
 const asyncHandler = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
-// Auth routes
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 
-// Profile routes
 router.get("/profile", protect, asyncHandler(getProfile));
 router.put(
   "/profile",
@@ -33,7 +30,6 @@ router.put(
   asyncHandler(updateProfile)
 );
 
-// Admin routes
 router.get("/", protect, admin, asyncHandler(getUsers));
 router.delete("/:id", protect, admin, asyncHandler(deleteUser));
 router.put(
@@ -44,7 +40,6 @@ router.put(
   asyncHandler(adminUpdateUser)
 );
 
-// Logout
 router.post("/logout", protect, asyncHandler(logout));
 
 module.exports = router;

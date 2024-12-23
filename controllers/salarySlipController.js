@@ -3,7 +3,6 @@ const StudentPackage = require("../models/studentPackageModel");
 const User = require("../models/userModel");
 const PDFDocument = require("pdfkit");
 
-// Get all salary slips (Admin only)
 const getAllSalarySlips = async (req, res) => {
   try {
     const salarySlips = await SalarySlip.find().populate("teacher_id", "name");
@@ -19,7 +18,6 @@ const getAllSalarySlips = async (req, res) => {
   }
 };
 
-// Get teacher's salary slip (Teacher and Admin)
 const getTeacherSalarySlip = async (req, res) => {
   try {
     const { teacherId, month, year } = req.params;
@@ -48,7 +46,6 @@ const getTeacherSalarySlip = async (req, res) => {
   }
 };
 
-// Update or create salary slip (called when a schedule is created or updated)
 const updateSalarySlip = async (
   teacherId,
   schedule,
@@ -76,13 +73,11 @@ const updateSalarySlip = async (
 
   const totalFee = schedule.teacher_fee + schedule.transport_fee;
 
-  // Check if the detail already exists
   const existingDetailIndex = salarySlip.details.findIndex(
     (detail) => detail.date.toISOString() === schedule.date.toISOString()
   );
 
   if (existingDetailIndex !== -1) {
-    // Update existing detail
     salarySlip.details[existingDetailIndex] = {
       student_name: studentName,
       instrument,
@@ -95,7 +90,6 @@ const updateSalarySlip = async (
       total_fee: totalFee,
     };
   } else {
-    // Add new detail
     salarySlip.details.push({
       student_name: studentName,
       instrument,
@@ -109,7 +103,6 @@ const updateSalarySlip = async (
     });
   }
 
-  // Recalculate total_salary
   salarySlip.total_salary = salarySlip.details.reduce((total, detail) => {
     return detail.attendance_status === "Success"
       ? total + detail.total_fee
@@ -119,7 +112,6 @@ const updateSalarySlip = async (
   await salarySlip.save();
 };
 
-// Download salary slip as PDF (Admin only)
 const downloadSalarySlipPDF = async (req, res) => {
   try {
     const { teacherId, month, year } = req.params;

@@ -14,12 +14,10 @@ const {
   addSchedule,
 } = require("../controllers/studentPackageController");
 
-// Error handler wrapper
 const asyncHandler = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
-// Admin routes
 router
   .route("/")
   .post(protect, admin, asyncHandler(createStudentPackage))
@@ -39,12 +37,12 @@ router.delete(
 
 router.post(
   "/:studentPackageId/schedules",
+
   protect,
   admin,
   asyncHandler(addSchedule)
 );
 
-// Teacher routes
 router.get(
   "/schedules/teacher",
   protect,
@@ -56,11 +54,10 @@ router.put(
   "/:studentPackageId/schedules/:scheduleId/attendance",
   protect,
   teacher,
-  upload.single("activity_photo"), // Middleware upload file
+  upload.single("activity_photo"),
   asyncHandler(updateAttendance)
 );
 
-// Updated route to use custom middleware that allows both teacher and admin
 router.put(
   "/:studentPackageId/schedules/:scheduleId/attendance",
   protect,
@@ -76,11 +73,10 @@ router.put(
       });
     }
   },
-  upload.single("activity_photo"), // Middleware upload file
+  upload.single("activity_photo"),
   asyncHandler(updateAttendance)
 );
 
-// Student routes
 router.get("/schedules/student", protect, asyncHandler(getStudentSchedules));
 
 module.exports = router;

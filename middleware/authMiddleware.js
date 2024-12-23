@@ -1,8 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
-// Auth middleware
-// Protect routes from unauthorized access
 const protect = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -10,19 +8,15 @@ const protect = async (req, res, next) => {
       return res.status(401).json({ message: "Not authorized, no token" });
     }
 
-    // Get token
     const token = authHeader.split(" ")[1];
 
-    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Get user
     const user = await User.findById(decoded.id).select("-password");
     if (!user) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    // Add user to request
     req.user = user;
     next();
   } catch (error) {
@@ -31,7 +25,6 @@ const protect = async (req, res, next) => {
   }
 };
 
-// Admin middleware
 const admin = async (req, res, next) => {
   try {
     if (
@@ -48,7 +41,6 @@ const admin = async (req, res, next) => {
   }
 };
 
-// Teacher middleware
 const teacher = async (req, res, next) => {
   try {
     if (

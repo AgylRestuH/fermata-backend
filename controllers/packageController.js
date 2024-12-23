@@ -1,7 +1,5 @@
-// controllers/packageController.js
 const Package = require("../models/packageModel");
 
-// Get all packages
 const getPackages = async (req, res) => {
   try {
     const packages = await Package.find({ isActive: true });
@@ -14,21 +12,17 @@ const getPackages = async (req, res) => {
   }
 };
 
-// Create new package
 const createPackage = async (req, res) => {
   try {
     const { name, description, duration, price, sessionCount, instrument } =
       req.body;
 
-    // Validate duration
     if (![30, 45, 60].includes(duration)) {
       return res.status(400).json({
         message: "Invalid duration. Must be 30, 45, or 60 minutes",
       });
     }
 
-    // Validate instrument
-    // Optional, detele aja kalau mau validasi di frontendnya. Ini cuman buat di postman to make it ez.
     const validInstruments = [
       "Piano",
       "Vokal",
@@ -60,7 +54,6 @@ const createPackage = async (req, res) => {
   }
 };
 
-// Update package
 const updatePackage = async (req, res) => {
   try {
     const package = await Package.findByIdAndUpdate(req.params.id, req.body, {
@@ -78,9 +71,6 @@ const updatePackage = async (req, res) => {
   }
 };
 
-// Delete package (soft delete)
-// Soft Delete = set isActive to false to mark the package as deleted
-// Ganti aja kalau mau hard delete
 const deletePackage = async (req, res) => {
   try {
     const package = await Package.findByIdAndUpdate(

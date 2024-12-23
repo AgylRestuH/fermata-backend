@@ -3,7 +3,6 @@ const User = require("../models/userModel");
 const Package = require("../models/packageModel");
 const { updateSalarySlip } = require("./salarySlipController");
 
-// Create new student package (Admin only)
 const createStudentPackage = async (req, res) => {
   try {
     const {
@@ -16,7 +15,6 @@ const createStudentPackage = async (req, res) => {
       schedules,
     } = req.body;
 
-    // Validate payment_status
     if (!["Belum Lunas", "Lunas", "Dibatalkan"].includes(payment_status)) {
       return res.status(400).json({
         success: false,
@@ -24,7 +22,6 @@ const createStudentPackage = async (req, res) => {
       });
     }
 
-    // Validate student exists and is a student
     const studentUser = await User.findOne({
       _id: student_id,
       "user_type.role": "student",
@@ -47,7 +44,6 @@ const createStudentPackage = async (req, res) => {
       schedules,
     });
 
-    // Update salary slips for each schedule
     const package = await Package.findById(package_id);
     for (const schedule of studentPackage.schedules) {
       await updateSalarySlip(
@@ -70,7 +66,6 @@ const createStudentPackage = async (req, res) => {
   }
 };
 
-// Get all student packages (Admin only)
 const getAllStudentPackages = async (req, res) => {
   try {
     const studentPackages = await StudentPackage.find()
@@ -90,7 +85,6 @@ const getAllStudentPackages = async (req, res) => {
   }
 };
 
-// Get teacher schedules (Teacher only)
 const getTeacherSchedules = async (req, res) => {
   try {
     const schedules = await StudentPackage.find({
@@ -112,7 +106,6 @@ const getTeacherSchedules = async (req, res) => {
   }
 };
 
-// Get student schedules (Student only)
 const getStudentSchedules = async (req, res) => {
   try {
     const schedules = await StudentPackage.find({
@@ -180,7 +173,7 @@ const updateAttendance = async (req, res) => {
       });
     }
 
-    const baseUrl = process.env.BASE_URL || "http://localhost:8080"; // Default to localhost if not set
+    const baseUrl = process.env.BASE_URL || "http://localhost:8080";
 
     schedule.attendance_status = attendance_status;
     schedule.activity_photo = req.file
@@ -211,7 +204,6 @@ const updateAttendance = async (req, res) => {
   }
 };
 
-// Update schedule (Admin only)
 const updateSchedule = async (req, res) => {
   try {
     const { studentPackageId, scheduleId } = req.params;
@@ -234,7 +226,6 @@ const updateSchedule = async (req, res) => {
       });
     }
 
-    // Update schedule fields
     if (teacher_id) schedule.teacher_id = teacher_id;
     if (date) schedule.date = new Date(date);
     if (time) schedule.time = time;
@@ -244,7 +235,6 @@ const updateSchedule = async (req, res) => {
 
     await studentPackage.save();
 
-    // Update salary slip
     const student = await User.findById(studentPackage.student_id);
     const package = await Package.findById(studentPackage.package_id);
     await updateSalarySlip(
@@ -266,7 +256,6 @@ const updateSchedule = async (req, res) => {
   }
 };
 
-// Add schedule to existing student package (Admin only)
 const addSchedule = async (req, res) => {
   try {
     const { studentPackageId } = req.params;
@@ -281,7 +270,6 @@ const addSchedule = async (req, res) => {
       });
     }
 
-    // Parse the date string into a Date object
     const parsedDate = new Date(date);
     if (isNaN(parsedDate.getTime())) {
       return res.status(400).json({
@@ -290,7 +278,6 @@ const addSchedule = async (req, res) => {
       });
     }
 
-    // Add new schedule
     const newSchedule = {
       teacher_id,
       date: parsedDate,
@@ -301,12 +288,10 @@ const addSchedule = async (req, res) => {
       attendance_status: "Belum Berlangsung",
     };
 
-    // Add schedule to array schedules
     studentPackage.schedules.push(newSchedule);
     await studentPackage.save();
 
     try {
-      // Update salary slip
       const student = await User.findById(studentPackage.student_id);
       const package = await Package.findById(studentPackage.package_id);
       await updateSalarySlip(
@@ -317,7 +302,6 @@ const addSchedule = async (req, res) => {
       );
     } catch (error) {
       console.error("Error updating salary slip:", error);
-      // You may choose to return an error response here or just log the error
     }
 
     res.status(200).json({
@@ -333,7 +317,6 @@ const addSchedule = async (req, res) => {
   }
 };
 
-// Delete student package (Admin only)
 const deleteStudentPackage = async (req, res) => {
   try {
     const studentPackage = await StudentPackage.findById(
@@ -361,7 +344,6 @@ const deleteStudentPackage = async (req, res) => {
   }
 };
 
-// Delete schedule (Admin only)
 const deleteSchedule = async (req, res) => {
   try {
     const { studentPackageId, scheduleId } = req.params;

@@ -2,14 +2,12 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 };
 
-// Register User (Admin, Teacher, Student)
 const registerUser = async (req, res) => {
   try {
     const { name, email, password, role, phone, address, teacher_data } =
@@ -20,11 +18,9 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create base user data
     let userData = {
       name,
       email,
@@ -32,7 +28,6 @@ const registerUser = async (req, res) => {
       user_type: { role },
     };
 
-    // Add phone n address (non-admin)
     if (role !== "admin") {
       if (!phone || !address) {
         return res.status(400).json({
@@ -46,8 +41,6 @@ const registerUser = async (req, res) => {
       };
     }
 
-    // Add role-specific data
-    // Teacher add instruments field???
     if (role === "teacher") {
       if (!teacher_data || !teacher_data.instruments) {
         return res
@@ -77,12 +70,10 @@ const registerUser = async (req, res) => {
   }
 };
 
-// Login User
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check for user email
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -101,10 +92,8 @@ const loginUser = async (req, res) => {
   }
 };
 
-// Logout User
 const logout = async (req, res) => {
   try {
-    // Logging: logout user
     console.log(`User ${req.user.id} logged out`);
 
     res.status(200).json({
