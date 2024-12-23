@@ -15,6 +15,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    cover_image: {
+      type: String, // Store the path to the cover image
+    },
     phone: {
       type: String,
       required: function () {

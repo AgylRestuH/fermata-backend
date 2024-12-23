@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../middleware/uploadMiddleware");
 const {
   registerUser,
   loginUser,
@@ -24,7 +25,12 @@ router.post("/login", loginUser);
 
 // Profile routes
 router.get("/profile", protect, asyncHandler(getProfile));
-router.put("/profile", protect, asyncHandler(updateProfile));
+router.put(
+  "/profile",
+  protect,
+  upload.single("cover_image"),
+  asyncHandler(updateProfile)
+);
 
 // Admin routes
 router.get("/", protect, admin, asyncHandler(getUsers));
