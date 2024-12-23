@@ -170,7 +170,6 @@ const updateAttendance = async (req, res) => {
       });
     }
 
-    // Updated authorization check to allow both teacher and admin
     if (
       req.user.user_type.role !== "admin" &&
       schedule.teacher_id.toString() !== req.user.id
@@ -181,13 +180,16 @@ const updateAttendance = async (req, res) => {
       });
     }
 
+    const baseUrl = process.env.BASE_URL || "http://localhost:8080"; // Default to localhost if not set
+
     schedule.attendance_status = attendance_status;
-    schedule.activity_photo = req.file ? `/public/uploads${req.file.filename}` : schedule.activity_photo;
+    schedule.activity_photo = req.file
+      ? `${baseUrl}/public/uploads/${req.file.filename}`
+      : schedule.activity_photo;
     schedule.note = note;
 
     await studentPackage.save();
 
-    // Update salary slip
     const student = await User.findById(studentPackage.student_id);
     const package = await Package.findById(studentPackage.package_id);
     await updateSalarySlip(
