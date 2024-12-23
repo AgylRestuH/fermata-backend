@@ -12,6 +12,7 @@ const {
   updateProfile,
   getUsers,
   deleteUser,
+  adminUpdateUser,
 } = require("../controllers/userController");
 
 // Error handler wrapper
@@ -35,6 +36,13 @@ router.put(
 // Admin routes
 router.get("/", protect, admin, asyncHandler(getUsers));
 router.delete("/:id", protect, admin, asyncHandler(deleteUser));
+router.put(
+  "/profile/:id",
+  protect,
+  admin,
+  upload.single("cover_image"),
+  asyncHandler(adminUpdateUser)
+);
 
 // Logout
 router.post("/logout", protect, asyncHandler(logout));
