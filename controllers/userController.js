@@ -47,18 +47,9 @@ const updateProfile = async (req, res) => {
     }
 
     const updatedUser = await user.save();
+    const { password, ...userWithoutPassword } = updatedUser.toObject();
 
-    res.status(200).json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      phone: updatedUser.phone,
-      address: updatedUser.address,
-      cover_image: updatedUser.cover_image,
-      role: updatedUser.user_type.role,
-      teacher_data: updatedUser.user_type.teacher_data,
-      password: updatedUser.password,
-    });
+    res.status(200).json(userWithoutPassword);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -102,6 +93,11 @@ const adminUpdateUser = async (req, res) => {
     user.phone = req.body.phone || user.phone;
     user.address = req.body.address || user.address;
 
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(req.body.password, salt);
+    }
+
     if (user.user_type.role === "teacher" && req.body.teacher_data) {
       user.user_type.teacher_data.instruments =
         req.body.teacher_data.instruments ||
@@ -115,16 +111,9 @@ const adminUpdateUser = async (req, res) => {
     }
 
     const updatedUser = await user.save();
-    res.status(200).json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      phone: updatedUser.phone,
-      address: updatedUser.address,
-      cover_image: updatedUser.cover_image,
-      role: updatedUser.user_type.role,
-      teacher_data: updatedUser.user_type.teacher_data,
-    });
+    const { password, ...userWithoutPassword } = updatedUser.toObject();
+
+    res.status(200).json(userWithoutPassword);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
