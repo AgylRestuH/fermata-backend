@@ -211,23 +211,27 @@ const getAllSchedules = async (req, res) => {
       .populate("package_id", "name description duration price instrument")
       .populate("schedules.teacher_id", "name email phone");
 
-    const allSchedules = studentPackages.flatMap((pkg) => {
-      return pkg.schedules.map((schedule) => ({
-        student: pkg.student_id,
-        package: pkg.package_id,
-        teacher: schedule.teacher_id,
+    const formattedSchedules = studentPackages.map((pkg) => ({
+      _id: pkg._id, // Student Package ID di level atas
+      student_id: pkg.student_id,
+      package_id: pkg.package_id,
+      schedules: pkg.schedules.map((schedule) => ({
+        _id: schedule._id, // Schedule ID
+        teacher_id: schedule.teacher_id,
         date: schedule.date,
         time: schedule.time,
+        transport_fee: schedule.transport_fee,
+        teacher_fee: schedule.teacher_fee,
         room: schedule.room,
-        attendance_status: schedule.attendance_status,
-        note: schedule.note,
-        activity_photo: schedule.activity_photo,
-      }));
-    });
+        attendance_status: schedule.attendance_status || "Belum Berlangsung",
+        note: schedule.note || "-",
+        activity_photo: schedule.activity_photo || "-",
+      })),
+    }));
 
     res.status(200).json({
       success: true,
-      data: allSchedules,
+      data: formattedSchedules,
     });
   } catch (error) {
     res.status(400).json({
