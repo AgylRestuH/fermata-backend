@@ -27,6 +27,7 @@ const userRoutes = require("./routes/userRoutes");
 const packageRoutes = require("./routes/packageRoutes");
 const studentPackageRoutes = require("./routes/studentPackageRoutes");
 const salarySlipRoutes = require("./routes/salarySlipRoutes");
+const statisticsRoute = require("./routes/statisticsRoute");
 
 // Validate routes first, then import before using them
 if (!userRoutes || !packageRoutes) {
@@ -38,6 +39,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/packages", packageRoutes);
 app.use("/api/student-packages", studentPackageRoutes);
 app.use("/api/salary-slips", salarySlipRoutes);
+app.use("/api/statistics", statisticsRoute);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
