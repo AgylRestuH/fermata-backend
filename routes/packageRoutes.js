@@ -6,6 +6,7 @@ const {
   createPackage,
   updatePackage,
   deletePackage,
+  getDetailPackage,
 } = require("../controllers/packageController");
 
 const asyncHandler = (fn) => (req, res, next) => {
@@ -13,6 +14,7 @@ const asyncHandler = (fn) => (req, res, next) => {
 };
 
 router.get("/", asyncHandler(getPackages));
+router.get("/:id", asyncHandler(getDetailPackage));
 
 router.post("/", protect, admin, asyncHandler(createPackage));
 router.put("/:id", protect, admin, asyncHandler(updatePackage));

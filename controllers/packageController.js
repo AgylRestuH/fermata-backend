@@ -90,8 +90,24 @@ const deletePackage = async (req, res) => {
   }
 };
 
+const getDetailPackage = async (req, res) => {
+  try {
+    const package = await Package.findById(req.params.id);
+    if (!package || !package.isActive) {
+      return res.status(404).json({ message: "Package not found" });
+    }
+    res.json(package);
+  } catch (error) {
+    res.status(400).json({
+      message: "Error getting package details",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getPackages,
+  getDetailPackage,
   createPackage,
   updatePackage,
   deletePackage,
