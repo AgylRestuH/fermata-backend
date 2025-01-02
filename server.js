@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 
 // Routes
 const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
 const packageRoutes = require("./routes/packageRoutes");
 const studentPackageRoutes = require("./routes/studentPackageRoutes");
 const salarySlipRoutes = require("./routes/salarySlipRoutes");
@@ -35,7 +36,8 @@ if (!userRoutes || !packageRoutes) {
 }
 
 // Use routes
-app.use("/api/auth", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/packages", packageRoutes);
 app.use("/api/student-packages", studentPackageRoutes);
 app.use("/api/salary-slips", salarySlipRoutes);
