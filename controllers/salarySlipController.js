@@ -255,7 +255,5 @@ const deleteSalarySlip = async (req, res) => {
 module.exports = {
   getAllSalarySlips,
   getTeacherSalarySlip,
-  updateSalarySlip,
   downloadSalarySlipPDF,
-  deleteSalarySlip,
 };
