@@ -62,11 +62,17 @@ const updateSalarySlip = async (
   });
 
   if (!salarySlip) {
-    // If the salary slip doesn't exist, respond with 404
-    throw new Error("Salary slip not found");
+    salarySlip = new SalarySlip({
+      teacher_id: teacherId,
+      month,
+      year,
+      total_salary: 0,
+      details: [],
+    });
   }
 
   const totalFee = schedule.teacher_fee + schedule.transport_fee;
+
   const existingDetailIndex = salarySlip.details.findIndex(
     (detail) => detail.date.toISOString() === schedule.date.toISOString()
   );
@@ -103,9 +109,7 @@ const updateSalarySlip = async (
       : total;
   }, 0);
 
-  // Ensure the salary slip is saved
   await salarySlip.save();
-  return salarySlip;
 };
 
 const downloadSalarySlipPDF = async (req, res) => {
@@ -223,37 +227,9 @@ const downloadSalarySlipPDF = async (req, res) => {
   }
 };
 
-const deleteSalarySlip = async (req, res) => {
-  try {
-    const { teacherId, month, year } = req.params;
-
-    const deletedSlip = await SalarySlip.findOneAndDelete({
-      teacher_id: teacherId,
-      month: parseInt(month),
-      year: parseInt(year),
-    });
-
-    if (!deletedSlip) {
-      return res.status(404).json({
-        success: false,
-        message: "Salary slip not found",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Salary slip deleted successfully",
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
 module.exports = {
   getAllSalarySlips,
   getTeacherSalarySlip,
+  updateSalarySlip,
   downloadSalarySlipPDF,
 };
