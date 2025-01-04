@@ -62,17 +62,11 @@ const updateSalarySlip = async (
   });
 
   if (!salarySlip) {
-    salarySlip = new SalarySlip({
-      teacher_id: teacherId,
-      month,
-      year,
-      total_salary: 0,
-      details: [],
-    });
+    // If the salary slip doesn't exist, respond with 404
+    throw new Error("Salary slip not found");
   }
 
   const totalFee = schedule.teacher_fee + schedule.transport_fee;
-
   const existingDetailIndex = salarySlip.details.findIndex(
     (detail) => detail.date.toISOString() === schedule.date.toISOString()
   );
@@ -109,7 +103,9 @@ const updateSalarySlip = async (
       : total;
   }, 0);
 
+  // Ensure the salary slip is saved
   await salarySlip.save();
+  return salarySlip;
 };
 
 const downloadSalarySlipPDF = async (req, res) => {
