@@ -227,9 +227,39 @@ const downloadSalarySlipPDF = async (req, res) => {
   }
 };
 
+const deleteSalarySlip = async (req, res) => {
+  try {
+    const { teacherId, month, year } = req.params;
+
+    const deletedSlip = await SalarySlip.findOneAndDelete({
+      teacher_id: teacherId,
+      month: parseInt(month),
+      year: parseInt(year),
+    });
+
+    if (!deletedSlip) {
+      return res.status(404).json({
+        success: false,
+        message: "Salary slip not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Salary slip deleted successfully",
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAllSalarySlips,
   getTeacherSalarySlip,
   updateSalarySlip,
   downloadSalarySlipPDF,
+  deleteSalarySlip,
 };

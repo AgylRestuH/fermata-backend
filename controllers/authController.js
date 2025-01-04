@@ -65,7 +65,6 @@ const registerUser = async (req, res) => {
       token: generateToken(user._id),
     });
   } catch (error) {
-    console.log("Registration error:", error);
     res.status(400).json({ message: error.message });
   }
 };
@@ -94,8 +93,6 @@ const loginUser = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    console.log(`User ${req.user.id} logged out`);
-
     res.status(200).json({
       success: true,
       message: "Logged out successfully",

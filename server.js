@@ -43,6 +43,10 @@ app.use("/api/student-packages", studentPackageRoutes);
 app.use("/api/salary-slips", salarySlipRoutes);
 app.use("/api/statistics", statisticsRoute);
 
+if (process.env.NODE_ENV !== "test") {
+  connectDB();
+}
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -64,8 +68,10 @@ app.use((req, res, next) => {
   next();
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+if (process.env.NODE_ENV !== "test") {
+  const PORT = process.env.PORT || 8080;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err) => {
@@ -74,3 +80,5 @@ process.on("unhandledRejection", (err) => {
   // close server & exit process
   // server.close(() => process.exit(1));
 });
+
+module.exports = app;

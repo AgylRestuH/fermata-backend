@@ -337,9 +337,7 @@ const addSchedule = async (req, res) => {
         student.name,
         package.instrument
       );
-    } catch (error) {
-      console.error("Error updating salary slip:", error);
-    }
+    } catch (error) {}
 
     res.status(200).json({
       success: true,
