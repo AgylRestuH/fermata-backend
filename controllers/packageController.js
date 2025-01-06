@@ -56,12 +56,47 @@ const createPackage = async (req, res) => {
 
 const updatePackage = async (req, res) => {
   try {
-    const package = await Package.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+    const { name, description, duration, price, sessionCount, instrument } =
+      req.body;
+
+    // Validate duration
+    if (duration && ![30, 45, 60].includes(duration)) {
+      return res.status(400).json({
+        message: "Invalid duration. Must be 30, 45, or 60 minutes",
+      });
+    }
+
+    // Validate instrument
+    const validInstruments = [
+      "Piano",
+      "Vokal",
+      "Drum",
+      "Gitar",
+      "Biola",
+      "Bass",
+    ];
+    if (instrument && !validInstruments.includes(instrument)) {
+      return res.status(400).json({ message: "Invalid instrument" });
+    }
+
+    // Only update allowed fields
+    const updates = {};
+    if (name) updates.name = name;
+    if (description) updates.description = description;
+    if (duration) updates.duration = duration;
+    if (price) updates.price = price;
+    if (sessionCount) updates.sessionCount = sessionCount;
+    if (instrument) updates.instrument = instrument;
+
+    const package = await Package.findByIdAndUpdate(req.params.id, updates, {
+      new: true, // Return the updated document
+      runValidators: true, // Run schema validations
     });
+
     if (!package) {
       return res.status(404).json({ message: "Package not found" });
     }
+
     res.json(package);
   } catch (error) {
     res.status(400).json({
