@@ -5,6 +5,7 @@ const upload = require("../middleware/uploadMiddleware");
 const {
   createStudentPackage,
   getAllStudentPackages,
+  getDetailStudentPackage,
   updateSchedule,
   deleteStudentPackage,
   deleteSchedule,
@@ -23,6 +24,8 @@ router
   .route("/")
   .post(protect, admin, asyncHandler(createStudentPackage))
   .get(protect, admin, asyncHandler(getAllStudentPackages));
+
+router.get("/:id", protect, admin, asyncHandler(getDetailStudentPackage));
 
 router
   .route("/:studentPackageId/schedules/:scheduleId")

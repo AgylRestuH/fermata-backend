@@ -85,6 +85,26 @@ const getAllStudentPackages = async (req, res) => {
   }
 };
 
+const getDetailStudentPackage = async (req, res) => {
+  try {
+    const studentPackage = await StudentPackage.findById(req.params.id)
+      .populate("student_id", "name email phone")
+      .populate("package_id", "name description duration price")
+      .populate("schedules.teacher_id", "name");
+
+    if (!studentPackage) {
+      return res.status(404).json({ message: "Student package not found" });
+    }
+
+    res.json(studentPackage);
+  } catch (error) {
+    res.status(400).json({
+      message: "Error getting student package details",
+      error: error.message,
+    });
+  }
+};
+
 const getTeacherSchedules = async (req, res) => {
   try {
     const schedules = await StudentPackage.find({
@@ -420,6 +440,7 @@ const deleteSchedule = async (req, res) => {
 module.exports = {
   createStudentPackage,
   getAllStudentPackages,
+  getDetailStudentPackage,
   getTeacherSchedules,
   getStudentSchedules,
   updateAttendance,
