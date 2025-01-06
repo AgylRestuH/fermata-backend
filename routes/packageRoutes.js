@@ -13,8 +13,8 @@ const asyncHandler = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
-router.get("/", asyncHandler(getPackages));
-router.get("/:id", asyncHandler(getDetailPackage));
+router.get("/", protect, admin, asyncHandler(getPackages));
+router.get("/:id", protect, admin, asyncHandler(getDetailPackage));
 
 router.post("/", protect, admin, asyncHandler(createPackage));
 router.put("/:id", protect, admin, asyncHandler(updatePackage));

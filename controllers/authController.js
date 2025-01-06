@@ -84,10 +84,10 @@ const loginUser = async (req, res) => {
         token: generateToken(user._id),
       });
     } else {
-      res.status(400).json({ message: "Invalid credentials" });
+      res.status(401).json({ message: "Invalid credentials" });
     }
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(401).json({ message: error.message });
   }
 };
 

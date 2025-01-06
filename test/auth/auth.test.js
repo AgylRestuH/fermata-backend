@@ -138,20 +138,20 @@ describe("Auth Endpoints", () => {
       expect(res.status).to.equal(200);
     });
 
-    it("should return 400 if password is incorrect", async () => {
+    it("should return 401 if password is incorrect", async () => {
       const res = await request.post("/api/auth/login").send({
         email: "test@example.com",
         password: "wrongpassword",
       });
-      expect(res.status).to.equal(400);
+      expect(res.status).to.equal(401);
     });
 
-    it("should return 400 if email does not exist", async () => {
+    it("should return 401 if email does not exist", async () => {
       const res = await request.post("/api/auth/login").send({
         email: "nonexistent@test.com",
         password: "password123",
       });
-      expect(res.status).to.equal(400);
+      expect(res.status).to.equal(401);
     });
   });
 
