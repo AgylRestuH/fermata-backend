@@ -7,7 +7,7 @@ const {
   updateProfile,
   getUsers,
   deleteUser,
-  adminUpdateUser,
+  updateUserProfile,
 } = require("../controllers/userController");
 
 const asyncHandler = (fn) => (req, res, next) => {
@@ -29,7 +29,7 @@ router.put(
   protect,
   admin,
   upload.single("cover_image"),
-  asyncHandler(adminUpdateUser)
+  asyncHandler(updateUserProfile)
 );
 
 module.exports = router;

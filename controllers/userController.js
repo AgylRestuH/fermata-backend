@@ -80,7 +80,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const adminUpdateUser = async (req, res) => {
+const updateUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
 
@@ -124,5 +124,5 @@ module.exports = {
   updateProfile,
   getUsers,
   deleteUser,
-  adminUpdateUser,
+  updateUserProfile,
 };
