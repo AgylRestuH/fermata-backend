@@ -313,6 +313,44 @@ const updateSchedule = async (req, res) => {
   }
 };
 
+// Update student package function
+const updateStudentPackage = async (req, res) => {
+  try {
+    const { studentPackageId } = req.params;
+    const { payment_status, payment_total, payment_date, date_periode } =
+      req.body;
+
+    // Find student package
+    const studentPackage = await StudentPackage.findById(studentPackageId);
+    if (!studentPackage) {
+      return res.status(404).json({
+        success: false,
+        message: "Student package not found",
+      });
+    }
+
+    // Update student package fields
+    if (payment_status) studentPackage.payment_status = payment_status;
+    if (payment_total !== undefined)
+      studentPackage.payment_total = payment_total;
+    if (payment_date) studentPackage.payment_date = new Date(payment_date);
+    if (date_periode) studentPackage.date_periode = date_periode;
+
+    // Save the updated student package
+    await studentPackage.save();
+
+    res.status(200).json({
+      success: true,
+      data: studentPackage,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 const addSchedule = async (req, res) => {
   try {
     const { studentPackageId } = req.params;
@@ -444,6 +482,7 @@ module.exports = {
   getTeacherSchedules,
   getStudentSchedules,
   updateAttendance,
+  updateStudentPackage,
   updateSchedule,
   deleteStudentPackage,
   deleteSchedule,

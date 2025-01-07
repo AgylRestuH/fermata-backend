@@ -9,6 +9,7 @@ const {
   updateSchedule,
   deleteStudentPackage,
   deleteSchedule,
+  updateStudentPackage,
   getTeacherSchedules,
   updateAttendance,
   getStudentSchedules,
@@ -31,6 +32,10 @@ router
   .route("/:studentPackageId/schedules/:scheduleId")
   .put(protect, admin, asyncHandler(updateSchedule))
   .delete(protect, admin, asyncHandler(deleteSchedule));
+
+  router
+  .route('/:studentPackageId')
+  .put(protect, admin, asyncHandler(updateStudentPackage));
 
 router.delete(
   "/:studentPackageId",
